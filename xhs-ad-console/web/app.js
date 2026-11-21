@@ -355,6 +355,12 @@ $("insight").addEventListener("click",withStatus(async () => {
   if (id === view) show("interpretation",result.text);
 },$("insight")));
 
-session().catch((error) => {
-  if (error.message !== "请登录") show("login-status",error.message,true);
-});
+if (window.location.protocol === "file:") {
+  show("login-status","当前打开的是本地 HTML。请运行 python -m app serve，再访问 http://127.0.0.1:8080。",true);
+} else {
+  $("login-form").querySelector("button").disabled = false;
+  show("login-status","");
+  session().catch((error) => {
+    if (error.message !== "请登录") show("login-status",error.message,true);
+  });
+}

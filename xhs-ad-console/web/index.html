@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>投放台 · 小红书报表与诊断</title>
-  <link rel="stylesheet" href="/style.css">
-  <script src="/app.js" defer></script>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./app.js" defer></script>
 </head>
 <body>
   <main id="login" class="login-shell">
@@ -14,8 +14,8 @@
       <h1>登录工作台</h1>
       <label>用户名<input name="username" autocomplete="username" required></label>
       <label>密码<input name="password" type="password" autocomplete="current-password" required></label>
-      <button class="primary">登录</button>
-      <p id="login-status" role="status"></p>
+      <button class="primary" disabled>登录</button>
+      <p id="login-status" role="status">请通过 Python 启动服务后访问 http://127.0.0.1:8080。</p>
     </form>
   </main>
   <div id="workspace" class="layout" hidden>
