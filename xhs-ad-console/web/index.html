@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>投放台 · 小红书报表与诊断</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <main id="login" class="login-shell">
+    <form id="login-form" class="login-card">
+      <div class="brand"><span class="mark">投</span> 投放台</div>
+      <h1>登录工作台</h1>
+      <label>用户名<input name="username" autocomplete="username" required></label>
+      <label>密码<input name="password" type="password" autocomplete="current-password" required></label>
+      <button class="primary">登录</button>
+      <p id="login-status" role="status"></p>
+    </form>
+  </main>
+  <div id="workspace" class="layout" hidden>
+    <aside>
+      <div class="brand"><span class="mark">投</span> 投放台</div>
+      <nav aria-label="工作台导航">
+        <button data-tab="overview" class="selected">账户总览</button>
+        <button data-tab="upload" data-editor>导入报表</button>
+        <button data-tab="query" data-editor>报表问数</button>
+        <button data-tab="knowledge" data-editor>投放知识库</button>
+        <button data-tab="diagnosis">账户诊断</button>
+        <button data-tab="management" data-manager>成本与审计</button>
+      </nav>
+      <div class="identity"><small id="role"></small><strong id="username"></strong><button id="logout" class="quiet">退出登录</button></div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <div><div class="context">小红书投放平台</div><h1 id="page-title">账户总览</h1></div>
+        <form id="scope">
+          <label>账户<select id="account"></select></label>
+          <label>开始<input id="start" type="date" required></label>
+          <label>结束<input id="end" type="date" required></label>
+          <button class="primary">应用</button>
+        </form>
+      </header>
+      <p id="status" role="status" aria-live="polite"></p>
+      <section id="overview" class="panel">
+        <div id="cards" class="cards"></div>
+        <div class="panel-grid">
+          <article class="card chart-card"><h2>消耗趋势</h2><canvas id="trend" width="800" height="300" aria-label="每日消耗趋势"></canvas></article>
+          <article class="card"><h2>计划消耗 Top 10</h2><div id="plans" class="table-wrap"></div></article>
+        </div>
+        <article class="card"><div class="heading"><h2>日报</h2><div class="actions">
+          <button id="insight" data-editor>生成数据解读</button><button id="copy">复制 Markdown</button><button id="push" data-editor>推送到群</button>
+        </div></div><p id="interpretation"></p><pre id="markdown"></pre></article>
+      </section>
+      <section id="upload" class="panel" hidden>
+        <article class="card narrow">
+          <h2>导入计划日报</h2>
+          <form id="upload-form">
+            <label>报表来源<select name="source"><option>聚光</option><option>乘风</option><option>通用</option></select></label>
+            <label>报表文件<input name="file" type="file" accept=".csv,text/csv" required></label>
+            <label>报表日期（文件无日期列时填写）<input name="day" type="date"></label>
+            <details><summary>自定义列名映射</summary>
+              <label>映射 JSON<textarea name="mapping" placeholder='{"spend":"实际表头名称"}'></textarea></label>
+            </details>
+            <label class="checkbox"><input name="replace" type="checkbox">覆盖已有日期的整日明细</label>
+            <button class="primary">导入</button>
+          </form>
+          <p id="import-result"></p>
+        </article>
+        <article class="card"><h2>导入历史</h2><div id="history" class="table-wrap"></div></article>
+      </section>
+      <section id="query" class="panel" hidden>
+        <article class="card"><h2>查询选定区间</h2>
+          <form id="ask-form" class="inline"><input name="question" placeholder="例如：CPL 最高的计划" maxlength="300" required><button class="primary">查询</button></form>
+          <canvas id="query-chart" width="800" height="220" aria-label="问数结果图表" hidden></canvas>
+          <div id="query-results" class="table-wrap"></div>
+        </article>
+      </section>
+      <section id="knowledge" class="panel" hidden>
+        <article class="card"><h2>检索 SOP 与投放复盘</h2>
+          <form id="search-form" class="inline"><input name="question" placeholder="例如：点击率下降怎么排查" maxlength="300" required><button class="primary">检索</button></form>
+          <div id="evidence" class="evidence"></div>
+        </article>
+        <article class="card narrow" data-manager><h2>录入租户共享资料</h2>
+          <form id="document-form">
+            <label>标题<input name="title" maxlength="200" required></label>
+            <label>出处<input name="source" placeholder="如 素材 SOP 第 2 节" maxlength="200" required></label>
+            <label>正文<textarea name="body" rows="5" maxlength="12000" required></textarea></label>
+            <button class="primary">保存资料</button>
+          </form>
+        </article>
+      </section>
+      <section id="diagnosis" class="panel" hidden>
+        <article class="card">
+          <div class="heading"><h2>诊断记录</h2><button class="primary" id="new-job" data-editor>诊断结束日期</button></div>
+          <div id="jobs"></div>
+        </article>
+        <article class="card" id="diagnosis-detail" hidden></article>
+      </section>
+      <section id="management" class="panel" hidden>
+        <article class="card"><h2>近 30 天模型用量</h2><div id="usage" class="table-wrap"></div></article>
+        <article class="card"><h2>最近操作</h2><div id="events" class="table-wrap"></div></article>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

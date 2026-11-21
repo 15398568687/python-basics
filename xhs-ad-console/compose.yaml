@@ -1,0 +1,25 @@
+services:
+  console:
+    build: .
+    ports:
+      - "127.0.0.1:8080:8080"
+    environment:
+      APP_ORIGIN: ${APP_ORIGIN:-}
+      REPORT_WEBHOOKS: ${REPORT_WEBHOOKS:-}
+      LLM_PRIMARY_KEY: ${LLM_PRIMARY_KEY:-}
+      LLM_PRIMARY_URL: ${LLM_PRIMARY_URL:-https://api.deepseek.com/chat/completions}
+      LLM_PRIMARY_MODEL: ${LLM_PRIMARY_MODEL:-deepseek-flash}
+      LLM_PRIMARY_INPUT_RATE: ${LLM_PRIMARY_INPUT_RATE:-2}
+      LLM_PRIMARY_OUTPUT_RATE: ${LLM_PRIMARY_OUTPUT_RATE:-8}
+      LLM_BACKUP_KEY: ${LLM_BACKUP_KEY:-}
+      LLM_BACKUP_URL: ${LLM_BACKUP_URL:-https://api.deepseek.com/chat/completions}
+      LLM_BACKUP_MODEL: ${LLM_BACKUP_MODEL:-deepseek-flash}
+      LLM_BACKUP_INPUT_RATE: ${LLM_BACKUP_INPUT_RATE:-2}
+      LLM_BACKUP_OUTPUT_RATE: ${LLM_BACKUP_OUTPUT_RATE:-8}
+      LLM_DAILY_TOKEN_BUDGET: ${LLM_DAILY_TOKEN_BUDGET:-120000}
+    volumes:
+      - console-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  console-data:
